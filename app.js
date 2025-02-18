@@ -15,12 +15,40 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
+const helmet=require("helmet");
+const compression = require("compression");
+app.use(compression());
+
+
+
+const crypto = require("crypto");
+
+app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString("base64"); // Generates a unique nonce per request
+    next();
+});
+
+
+
+
+
+
+
+const bodyParser = require('body-parser');
+var http = require('http').Server(app);
+
+
+
 
 
 
 const listingRouter=require("./routes/listing.js");
 const reviewRouter=require("./routes/review.js");
-const userRouter=require("./routes/user.js")
+const userRouter=require("./routes/user.js");
+const paymentRouter=require("./routes/paymentRoute.js");
+const yourBookingRouter=require("./routes/bookingsRoute.js");
+const footerRouter=require("./routes/footerRoute.js");
+
 
 
 
@@ -47,6 +75,8 @@ app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.json());
+
 
 const store=MongoStore.create({
     mongoUrl:dbUrl,
@@ -70,6 +100,16 @@ const sessionOptions={
         httpOnly:true,
     },
 };
+// const sessionOptions={
+//     secret:process.env.SECRET,
+//     resave:false,
+//     saveUninitialized:true,
+//     cookie:{
+//         expires:Date.now()+7*24*60*60*1000,
+//         maxAge:7*24*60*60*1000,
+//         httpOnly:true,
+//     },
+// };
 
 // app.get("/",(req,res)=>{
 //     res.send("Hi I am Arun Pandey");
@@ -105,10 +145,12 @@ app.use((req,res,next)=>{
 //     let registeredUser=await User.register(fakeUser,"HelloWorld");
 //     res.send(registeredUser);
 // });
-
+app.use("/listings/yourBookings",yourBookingRouter);
+app.use('/listings/payment',paymentRouter);
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
-app.use("/",userRouter)
+app.use("/footer",footerRouter)
+app.use("/",userRouter);
 
 
 app.all("*",(req,res,next)=>{
@@ -125,5 +167,5 @@ app.use((err,req,res,next)=>{
 
 })
 app.listen(8080,()=>{
-    console.log("server is listening on port 880");
+    console.log("server is listening on port 8080");
 });

@@ -15,6 +15,7 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
 
+
 </head>
 <body>
     <%- include("../includes/navbar.ejs") %>
@@ -23,8 +24,36 @@
         <%- body %>
     </div>
     <%- include("../includes/footer.ejs") %>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+    <!-- Floating Help Button -->
+<div class="help-box">
+    <button class="help-button">💬 Chat &nbsp;|&nbsp; Create a ticket</button>
+</div>
+
+<!-- Chatbot Popup -->
+<div class="chatbot-container">
+    <div class="chatbot-header">
+        <span>Support Chat</span>
+        <button class="close-chat">✖</button>
+    </div>
+    <div class="chatbot-body">
+        <p>Hi! How can we help you? 😊</p>
+        <p>Click below to chat with our support on WhatsApp.</p>
+        <a href="https://wa.me/+917080952705" target="_blank" class="whatsapp-button">📲 Chat on WhatsApp</a>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    document.querySelector(".help-button").addEventListener("click", function() {
+        document.querySelector(".chatbot-container").style.display = "block";
+    });
+
+    document.querySelector(".close-chat").addEventListener("click", function() {
+        document.querySelector(".chatbot-container").style.display = "none";
+    });
+
+</script>
+
 </body>
 </html> 

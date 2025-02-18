@@ -1,7 +1,7 @@
 
 
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
+<body >
     <!-- <h3>All listings</h3> -->
      <style>
         #filters{
@@ -35,9 +35,20 @@
             display: flex;
             align-items: center;
         }
+        .filter a {
+            text-decoration: none;  /* Removes underline */
+            color: inherit;  /* Inherits the text color from the parent */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .filter a:hover {
+            color: inherit;  /* Prevents color change on hover */
+        }
+
      </style>
 
-     <div id="filters">
+     <!-- <div id="filters">
         <div class="filter">
             <div>
                 <i class="fa-solid fa-fire"></i>
@@ -110,9 +121,84 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
             </div>
         </div>
-     </div>
+     </div> -->
+     <div id="filters" style="background-color: white;">
+        <div class="filter">
+            <a href="/listings?category=Trending" data-category="Trending">
+                <div><i class="fa-solid fa-fire"></i></div>
+                <p>Trending</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Rooms" data-category="Rooms">
+                <div><i class="fa-solid fa-bed"></i></div>
+                <p>Rooms</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Iconic city" data-category="Iconic city">
+                <div><i class="fa-solid fa-mountain-city"></i></div>
+                <p>Iconic city</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Mountains" data-category="Mountains">
+                <div><i class="fa-solid fa-mountain-sun"></i></div>
+                <p>Mountains</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Castles" data-category="Castles">
+                <div><i class="fa-brands fa-fort-awesome"></i></div>
+                <p>Castles</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Amazing Pools" data-category="Amazing Pools">
+                <div><i class="fa-solid fa-person-swimming"></i></div>
+                <p>Amazing Pools</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Camping" data-category="Camping">
+                <div><i class="fa-solid fa-campground"></i></div>
+                <p>Camping</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Farms" data-category="Farms">
+                <div><i class="fa-solid fa-cow"></i></div>
+                <p>Farms</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Arctic" data-category="Arctic">
+                <div><i class="fa-solid fa-snowflake"></i></div>
+                <p>Arctic</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Dome" data-category="Dome">
+                <div><i class="fa-solid fa-landmark-dome"></i></div>
+                <p>Dome</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=Boats" data-category="Boats">
+                <div><i class="fa-solid fa-ship"></i></div>
+                <p>Boats</p>
+            </a>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+    </div>
+    
     <!-- Bootstrap Grid Row -->
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-3">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
         <% for (let listing of alllistings) { %>
             <!-- Bootstrap Column -->
             <div class="col">
@@ -135,12 +221,14 @@
                                     /night</b>
                                 <i class="tax-info"> &nbsp; &nbsp; +18%GST</i>
                             </p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <hr>
+                            <a href="#" class="btn btn-outline-secondary ">Take a look at</a>
                         </div>
                     </div>
                 </a>
             </div>
         <% } %>
+        <hr><hr><hr>
     </div>
     <script>
         let taxSwitch=document.getElementById("flexSwitchCheckDefault");

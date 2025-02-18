@@ -1,0 +1,106 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  padding: 10px 0;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+header nav ul li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+header nav ul li a.active {
+  border-bottom: 2px solid #ff6f61;
+}
+
+.contact-container {
+  width: 80%;
+  max-width: 900px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #333;
+  text-align: center;
+}
+
+.contact-details {
+  margin-top: 20px;
+}
+
+.contact-details h2 {
+  font-size: 1.8em;
+  color: #333;
+}
+
+.contact-details p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.map-container {
+  margin-top: 40px;
+}
+
+.map-container h2 {
+  font-size: 1.8em;
+  color: #333;
+}
+
+.map {
+  margin-top: 20px;
+  max-width: 100%;
+}
+</style>
+<body>
+
+  <section class="contact-container">
+    <h1>Contact Us</h1>
+    
+    <p>If you have any questions or need assistance, feel free to reach out to us through the contact details below:</p>
+    
+    <div class="contact-details">
+        <h2>Need More Help?</h2>
+        <p>If you didn't find what you're looking for, contact our support team.</p>
+        <p><strong>Email</strong> official.pandeyarun0600@gmail.com</p>
+        <p><strong>Phone:</strong>+91 9005760620</p>
+        <p><strong>Support Hours:</strong> Monday - Friday, 9 AM - 6 PM</p>
+      </div>
+    
+    <div class="map-container">
+      <h2>Our Location:</h2>
+      <div class="map">
+        <!-- Replace the src URL with your actual location -->
+        
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113914.9678211696!2d80.94878798081082!3d26.84495357868908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd49fc60a843%3A0x92fc72e19b623f6a!2sGomti%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1739897219855!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+</body>
+

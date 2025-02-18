@@ -4,11 +4,31 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken=process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken});
 
-module.exports.index=async(req,res)=>{
-    const alllistings=await Listing.find({})
-    res.render("listings/index.ejs",{alllistings});
-    
-    
+const client = require("../redis.js");
+
+module.exports.index = async (req, res) => {
+    try {
+        console.log("I am in index");
+        const { category } = req.query;
+        let alllistings;
+
+        // Fetch data from DB
+        if (category) {
+            alllistings = await Listing.find({ category });
+        } else {
+            alllistings = await Listing.find({});
+        }
+
+        // Store data in Redis cache
+        if (req.cacheKey) {
+            await client.set(req.cacheKey, JSON.stringify(alllistings), { EX: 300 }); // Cache for 5 minutes
+        }
+
+        res.render("listings/index.ejs", { alllistings });
+    } catch (error) {
+        console.error("Error fetching listings:", error);
+        res.redirect("/listings");
+    }
 };
 
 module.exports.renderNewForm=(req,res)=>{
@@ -16,20 +36,29 @@ module.exports.renderNewForm=(req,res)=>{
     res.render("listings/new.ejs");
 };
 
+
+
 module.exports.showListing=async(req,res)=>{
     let {id}=req.params;
     console.log(id);
     const listing = await Listing.findById(id).populate({path:"reviews",populate:{path:"author",},}).populate("owner");
-    console.log(listing);
-    console.log(listing.geometry);
-    console.log(listing.geometry.coordinates);
+    console.log("Listing Owner ID Type:", typeof listing.owner._id, listing.owner._id);
     
+
     if(!listing){
         req.flash("error","The listing you are trying to access does not exists");
         res.redirect("/listings");
     }
+    // const userId=req.user._id;
+    // console.log(userId);
+
+    if (req.cacheKey) {
+        await client.set(req.cacheKey, JSON.stringify(listing), { EX: 300 });
+    }
+
     res.render("listings/show.ejs",{listing});
 };
+
 
 module.exports.createListing=async(req,res,next)=>{
     let response=await geocodingClient
@@ -64,25 +93,6 @@ module.exports.renderEditForm=async(req,res)=>{
     originalImageUrl=originalImageUrl.replace("/upload","/upload/w_250");
     res.render("listings/edit.ejs",{listing,originalImageUrl});
 };
-
-
-// module.exports.updateListing=async (req, res) => {
-    
-//     const { id } = req.params;
-//     if(typeof req.file !== "undefined"){
-//         console.log("hello");
-//         let listing=await Listing.findByIdAndUpdate(id,{...req.body.listing});
-//         console.log("bye");
-//         let updatedurl=req.file.path;
-//         let updatedfilename=req.file.filename;
-//         listing.image={url:updatedurl,filename:updatedfilename};
-//         console.log("bye-vye");
-//         await listing.save();
-//     }
-//     req.flash("success","Listing updated!");
-//     res.redirect(`/listings/${id}`);
-
-//   };
 
 module.exports.updateListing = async (req, res) => {
     let response=await geocodingClient
@@ -132,3 +142,14 @@ module.exports.destroyListing=async(req,res)=>{
     //   new: true,
     //   runValidators: true,
     // });
+
+
+    // await Listing.updateMany(
+    //     { category: { $exists: false } },  // Finds listings missing category
+    //     { $set: { category: "Rooms" } }    // Sets default category
+    // );
+    // console.log("Updated all old listings with category field!");
+
+
+
+

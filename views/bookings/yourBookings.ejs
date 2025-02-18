@@ -1,0 +1,34 @@
+
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Bookings</h2>
+
+    <% if (payments.length === 0) { %>
+        <div class="alert alert-info text-center">
+            No bookings found. Start exploring and book your next adventure!
+        </div>
+    <% } else { %>
+
+    <div class="row">
+        <% payments.forEach(payment => { %>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><%= payment.listingId.title %></h5>
+                        <p class="card-text">
+                            <strong>Amount Paid:</strong> ₹<%= payment.amount %> <br>
+                            <strong>Status:</strong> 
+                            <span class="badge <%= payment.status === 'paid' ? 'bg-success' : 'bg-warning' %>">
+                                <%= payment.status %>
+                            </span> <br>
+                            <strong>Order ID:</strong> <small class="text-muted"><%= payment.razorpay_order_id %></small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <% } %>
+</div>

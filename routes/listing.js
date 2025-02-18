@@ -6,7 +6,7 @@ const router=express.Router({mergeParams:true});
 const Listing=require("../models/listing.js");
 const wrapAsync=require("../utils/wrapAsync.js")
 const flash=require("connect-flash");
-const {isLoggedIn,isOwner,validateListing, isReviewAuthor}=require("../middleware.js");
+const {isLoggedIn,isOwner,validateListing, isReviewAuthor, verifyPayment,cacheListings, cacheSingleListing, clearCache, cacheSearch}=require("../middleware.js");
 
 
 
@@ -16,26 +16,34 @@ const {isLoggedIn,isOwner,validateListing, isReviewAuthor}=require("../middlewar
 // const upload = multer({ storage });
 
 const listingController=require("../controllers/listing.js");
+const hotelController = require("../controllers/hotelController");
 
 
 router
     .route("/")
-    .get(wrapAsync(listingController.index))
+    .get(cacheListings,wrapAsync(listingController.index))
     .post(isLoggedIn,upload.single("listing[image]"),validateListing,wrapAsync(listingController.createListing));
     
+
 
 //New Route
 router.get("/new",isLoggedIn,listingController.renderNewForm);
 
+//Search route
+router
+    .route("/search")
+    .get(cacheSearch,wrapAsync(hotelController.searchListings));
+
+
 router
     .route("/:id")
-    .get(wrapAsync(listingController.showListing))
-    .put(isLoggedIn,isOwner,upload.single("listing[image]"),validateListing, wrapAsync(listingController.updateListing))
-    .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing));
+    .get(cacheSingleListing,wrapAsync(listingController.showListing))
+    .put(isLoggedIn,isOwner,upload.single("listing[image]"),validateListing, wrapAsync(listingController.updateListing),clearCache)
+    .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing),clearCache);
 
 
 //Edit route
-router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm));
+router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEditForm),clearCache);
 
 // //Index Route
 // router.get("/",wrapAsync(listingController.index));
@@ -59,3 +67,7 @@ router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.renderEdit
 
 
 module.exports=router;
+
+
+
+

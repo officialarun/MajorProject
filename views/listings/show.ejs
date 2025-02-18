@@ -24,21 +24,25 @@
                     <button class="btn btn-dark">Create New Listing</button>
                 </form> -->
                 <br>
-                <% if(currUser && listing.owner._id.equals(currUser._id)){ %>
+                
+                <%if (currUser && listing.owner && listing.owner._id && currUser._id && listing.owner._id.toString() === currUser._id.toString()){ %>
                 <div class="butt">
                     <div class="butt1">
                         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark show-btn">Edit this listing</a>
-                    </div>
-                    
+                    </div>  
+                    <div class="butt3">
+                        <form action="/listings/payment/<%=listing._id%>/createOrder" method="POST" >
+                            <button class="btn btn-dark" id="pay-now-btn" data-listing-id="<%= listing._id %>">Book Now</button>
+                        </form>
+                    </div>                  
                     <div class="butt2">
                         <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
                             <button class="btn btn-dark">Delete this listing</button>
                         </form>
-                    </div>
-                    
+                    </div>                    
                 </div>
                 <% } %>
-                
+              
                 
             </div>
         </div>
@@ -48,7 +52,7 @@
             <% if(currUser){ %>
                 <hr>
             <h4>Leave a review</h4>
-            <form action="/listings/<%= listing.id %>/reviews" method="POST">
+            <form action="/listings/<%= listing._id %>/reviews" method="POST">
                 <!-- <div class="mb-3">
                     <label for="rating" class="form-label">Rating</label>
                     <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
@@ -84,6 +88,7 @@
             </form>
             <% } %>
         </div>
+        <% console.log("Reviews Array:", listing.reviews); %>
         <% if(listing.reviews.length>0){ %>
         <section id="reviews">
             <div class="reviews-container">
@@ -125,5 +130,91 @@
         <script src="/js/map.js"></script>
        
     </div>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.getElementById("pay-now-btn").addEventListener("click", async function(event) {
+            event.preventDefault();  // ✅ Stop default form submission
+            const listingId = this.getAttribute("data-listing-id");
+    
+            try {
+                // 🔹 Call your backend to create an order
+                const response = await fetch(`/listings/payment/${listingId}/createOrder`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+    
+                const data = await response.json();
+    
+                if (!data.success) {
+                    alert("❌ Error creating order. Please try again!");
+                    return;
+                }
+    
+                // 🔹 Initialize Razorpay Payment
+                const options = {
+                    key: data.key_id,  // Your Razorpay Key ID
+                    amount: data.amount,  // Amount in paise
+                    currency: "INR",
+                    name: data.name,
+                    description: data.description,
+                    order_id: data.order_id,
+                    handler: async function(response) {
+                        alert("✅ Payment Successful! Payment ID: " + response.razorpay_payment_id);
+
+                        const paymentData = {
+                            order_id: data.order_id,
+                            payment_id: response.razorpay_payment_id,
+                            signature: response.razorpay_signature
+                        };
+
+                        console.log(paymentData);
+
+                        // 🔹 Send payment details to backend
+                        const confirmResponse = await fetch(`/listings/payment/confirm`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(paymentData)
+                        });
+
+                        const confirmData = await confirmResponse.json();
+                        if (confirmData.success) {
+                            alert("✅ Payment recorded successfully!");
+                        } else {
+                            alert("⚠️ Error storing payment. Contact support.");
+                        }
+
+                        window.location.href = "/listings"; // Redirect after payment
+                    }
+                    ,
+                    prefill: {
+                        name: data.name,
+                        email: data.email,
+                        contact: data.contact
+                    },
+                    theme: {
+                        color: "#3399cc"
+                    },
+                    modal: {
+                        ondismiss: function() { 
+                            alert("⚠️ Payment Cancelled! Returning to the same page.");
+                            window.location.reload();  // ✅ Reload same page when user closes Razorpay modal
+                        }
+                    }
+                };
+    
+                const razorpay = new Razorpay(options);
+                razorpay.open();  // Open Razorpay UI
+    
+            } catch (error) {
+                console.error("❌ Payment error:", error);
+                alert("Something went wrong! Please try again.");
+            }
+        });
+    </script>
+    
+
+    
 </body>
 

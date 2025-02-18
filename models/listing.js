@@ -1,28 +1,3 @@
-// const mongoose=require("mongoose");
-// const Schema=mongoose.Schema;
-
-// const listingSchema=new Schema({
-//     title:{
-//         type: String,
-//         required:true
-//     },
-//     description:String,
-//     image:{
-        
-//         type: String,
-//         default:"https://unsplash.com/photos/a-city-street-covered-in-snow-next-to-a-tall-building-UUR3lJFPlQs",
-//         set:(v) => v === "" ? "https://unsplash.com/photos/a-city-street-covered-in-snow-next-to-a-tall-building-UUR3lJFPlQs"  :v,
-           
-//     },
-//     price:Number,
-//     location:String,
-//     country:String
-
-// });
-
-// const Listing=mongoose.model("Listing",listingSchema);
-
-// module.exports=Listing;
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -63,9 +38,21 @@ const listingSchema = new Schema({
             type: [Number],
             required: true
           }
-    }
+    },
+    category: {
+        type: String,
+        enum: [
+            "Trending", "Rooms", "Iconic city", "Mountains", "Castles",
+            "Amazing Pools", "Camping", "Farms", "Arctic", "Dome", "Boats"
+        ],
+        default: "Rooms" // Set a reasonable default category
+    },
+    
     
 });
+
+listingSchema.index({ title: "text", description: "text", location: "text" });
+
 
 //to delete reviews for listings that are deleted : basically cascadind effect
 // this is a basically a mongoose middleware that helps us to use post or pre function to work upon queries for database 
@@ -79,12 +66,3 @@ listingSchema.post("findOneAndDelete",async(listing)=>{
 const Listing = mongoose.model("Listing", listingSchema);
 
 module.exports = Listing;
-
-
-
-
-// url:{
-//     type: String,
-//     default: "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-//     set: (v) => v === "" ? "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60" : v
-// },

@@ -3,6 +3,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
 }
 
 .container{
@@ -11,6 +12,8 @@ body{
 .navbar{
     height: 5rem;
     background-color: white;
+    
+
 }
 
 .fa-compass{
@@ -37,6 +40,8 @@ body{
 }
 .f-info-links{
     width: 100%;
+    display: flexbox;
+    justify-content: space-between;
 }
 .f-info-socials,.f-info-brand{
     font-size: 1.3rem;
@@ -53,7 +58,7 @@ body{
 .f-info{
     
     text-align: center;
-    height: 8rem;
+    height: 10rem;
     background-color: #ebebeb;
     display: flex;
     flex-wrap: wrap;
@@ -117,6 +122,8 @@ h3 {
     border-radius: 1rem !important;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden; /* Prevent content overflow */
+    
+   
 }
 
 /* Card Hover Effects */
@@ -137,6 +144,7 @@ h3 {
 .card-body {
     text-align: center;
     padding: 1rem;
+   
 }
 
 /* Card Title */
@@ -230,24 +238,33 @@ a.text-decoration-none {
     margin-bottom: 1rem;
 }
 
-.butt1, .butt2 {
+.butt1,.butt2,.butt3 {
     flex: 1; /* Ensures both divisions have equal width */
     display: flex;
     justify-content: center; /* Centers content inside each division */
 }
 
 .show-btn {
-    background-color: #343a40; /* Dark background for the button */
+    /* background-color: #343a40; 
+    color: white; 
+    padding: 0.5rem 1.5rem; 
+    border-radius: 0.5rem; 
+    text-decoration: none; 
+    transition: all 0.3s ease; */
+    background-color: #343a40; /* Dark background for the delete button */
     color: white; /* White text */
     padding: 0.5rem 1.5rem; /* Spacing inside the button */
+    border: none; /* Removes border */
     border-radius: 0.5rem; /* Rounded corners */
-    text-decoration: none; /* Removes underline */
+    cursor: pointer; /* Pointer cursor on hover */
     transition: all 0.3s ease; /* Smooth hover effect */
 }
 
 .show-btn:hover {
+    /* background-color: #495057; 
+    transform: scale(1.05); */
     background-color: #495057; /* Lighter shade on hover */
-    transform: scale(1.05); /* Slight enlargement on hover */
+    transform: scale(1.05);
 }
 
 .butt2 button {
@@ -261,6 +278,20 @@ a.text-decoration-none {
 }
 
 .butt2 button:hover {
+    background-color: #495057; /* Lighter shade on hover */
+    transform: scale(1.05); /* Slight enlargement on hover */
+}
+
+.butt3 button {
+    background-color: #343a40; /* Dark background for the delete button */
+    color: white; /* White text */
+    padding: 0.5rem 1.5rem; /* Spacing inside the button */
+    border: none; /* Removes border */
+    border-radius: 0.5rem; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+.butt3 button:hover {
     background-color: #495057; /* Lighter shade on hover */
     transform: scale(1.05); /* Slight enlargement on hover */
 }
@@ -307,7 +338,7 @@ a.text-decoration-none {
     align-items: center;
     flex-wrap: nowrap;
     gap: 20px;
-    animation: scrollReviews 15s linear infinite;
+    animation: scrollReviews 30s linear infinite;
 }
 
 /* Pause animation when hovering over a review */
@@ -354,3 +385,90 @@ a.text-decoration-none {
     height: 400px;
     width: 100vh;
 }
+
+
+
+
+
+
+
+
+
+/* Floating Help Button */
+.help-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .help-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+  }
+  
+  .help-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Chatbot Popup */
+  .chatbot-container {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 280px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .chatbot-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Chatbot Body */
+  .chatbot-body p {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  /* WhatsApp Button */
+  .whatsapp-button {
+    display: inline-block;
+    background: #25d366;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .whatsapp-button:hover {
+    background: #1ebe57;
+  }
+  
