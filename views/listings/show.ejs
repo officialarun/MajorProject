@@ -23,8 +23,7 @@
                 <!-- <form action="/listings/new" method="GET">
                     <button class="btn btn-dark">Create New Listing</button>
                 </form> -->
-                <br>
-                
+                <br>                
                 <%if (currUser && listing.owner && listing.owner._id && currUser._id && listing.owner._id.toString() === currUser._id.toString()){ %>
                 <div class="butt">
                     <div class="butt1">
@@ -41,6 +40,16 @@
                         </form>
                     </div>                    
                 </div>
+                <% } %>
+                <%if (currUser) { %>
+                <div class="butt">
+                            <div class="butt3">
+                                <form action="/listings/payment/<%=listing._id%>/createOrder" method="POST" >
+                                    <button class="btn btn-dark" id="pay-now-btn" data-listing-id="<%= listing._id %>">Book Now</button>
+                                </form>
+                            </div>                  
+                                     
+                    </div>
                 <% } %>
               
                 
