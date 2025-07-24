@@ -29,11 +29,11 @@
                     <div class="butt1">
                         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark show-btn">Edit this listing</a>
                     </div>  
-                    <div class="butt3">
+                    <!-- <div class="butt3">
                         <form action="/listings/payment/<%=listing._id%>/createOrder" method="POST" >
                             <button class="btn btn-dark" id="pay-now-btn" data-listing-id="<%= listing._id %>">Book Now</button>
                         </form>
-                    </div>                  
+                    </div>                   -->
                     <div class="butt2">
                         <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
                             <button class="btn btn-dark">Delete this listing</button>
